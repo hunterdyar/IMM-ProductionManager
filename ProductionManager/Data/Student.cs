@@ -38,8 +38,32 @@ public class Student
         }
     }
 
+    private static double GetClassLevelAsDouble(ClassLevel level)
+    {
+        switch (level)
+        {
+            case ProductionManager.ClassLevel.TwoHundred:
+                return 200;
+            case ClassLevel.ThreeHundred:
+                return 300;
+            case ClassLevel.FourHundred:
+                return 400;
+            default:
+                return -1;
+        }
+
+    }
     public override string ToString()
     {
         return FirstName+" "+LastName;
+    }
+
+    public void SetToRow(IXLRow row)
+    {
+        row.Cell("A").Value = FirstName;
+        row.Cell("B").Value = LastName;
+        row.Cell("C").Value = StudentID;
+        row.Cell("D").Value = Section;
+        row.Cell("E").Value = GetClassLevelAsDouble(ClassLevel);
     }
 }

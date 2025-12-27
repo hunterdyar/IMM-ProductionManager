@@ -4,10 +4,10 @@ namespace ProductionManager.Views;
 
 public class StudentView : GroupBox
 {
-    private StudentDetailsView _details;
-    private StudentListView _listView;
+    private readonly StudentDetailsView _details;
+    private readonly StudentListView _listView;
     
-    public StudentView(MainWindow mainWindow) : base()
+    public StudentView(MainWindow mainWindow)
     {
         _listView = new StudentListView(mainWindow);
         _details = new StudentDetailsView(mainWindow);

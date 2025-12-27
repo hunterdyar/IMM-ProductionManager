@@ -1,8 +1,7 @@
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using ClosedXML.Excel;
- 
+using DocumentFormat.OpenXml.Spreadsheet;
+
 namespace ProductionManager;
 
 /// <summary>
@@ -75,7 +74,36 @@ public class DataStore
 
     private void SaveToBacking(bool onlyIfDirty = true)
     {
-        Console.WriteLine("todo: save!");
+        _workbook = new XLWorkbook();
+        var studentSheet = _workbook.AddWorksheet("students");
+        var projSheet = _workbook.AddWorksheet("projects");
+
+        //add headers
+        studentSheet.Row(0).Cell("A").Value = "first name";
+        studentSheet.Row(0).Cell("B").Value = "last name";
+        studentSheet.Row(0).Cell("C").Value = "ID";
+        studentSheet.Row(0).Cell("D").Value = "section";
+        studentSheet.Row(0).Cell("E").Value = "level";
+        
+        projSheet.Row(0).Cell("A").Value = "students";
+        projSheet.Row(0).Cell("B").Value = "week";
+        projSheet.Row(0).Cell("C").Value = "length";
+        projSheet.Row(0).Cell("D").Value = "rubric";
+        projSheet.Row(0).Cell("E").Value = "note";
+        projSheet.Row(0).Cell("F").Value = "grade";
+
+        for (var i = 0; i < _students.Count; i++)
+        {
+            var student = _students[i];
+            student.SetToRow(studentSheet.Row(i+1));
+        }
+        for (var i = 0; i < _projects.Count; i++)
+        {
+            var project = _projects[i];
+            project.SetToRow(projSheet.Row(i+1));
+        }
+        
+        _workbook.SaveAs(_workbookFile.FullName);
     }
 
 

@@ -1,3 +1,4 @@
+using System.Text;
 using ClosedXML.Excel;
 
 namespace ProductionManager;
@@ -66,5 +67,46 @@ public class Project
                 return Grade.NotStarted;
         }
         return Grade.Unknown;
+    }
+
+    public void SetToRow(IXLRow row)
+    {
+        row.Cell("A").Value = GetStudentsValue();
+        row.Cell("B").Value = Week;
+        row.Cell("C").Value = Length;
+        row.Cell("D").Value = Rubric;
+        row.Cell("E").Value = Note;
+        row.Cell("F").Value = GetGradeValue();
+    }
+
+    private string GetGradeValue()
+    {
+        switch (Grade)
+        {
+            case Grade.NotStarted:
+                return "i";
+            case Grade.Satisfactory:
+                return "s";
+            case Grade.Unsatisfactory:
+                return "ns";
+            default:
+                return "u";
+        }
+        
+    }
+
+    private string GetStudentsValue()
+    {
+        StringBuilder _sb = new StringBuilder();
+        for (int i = 0; i < _students.Length; i++)
+        {
+            _sb.Append(_students[i].StudentID);
+            if (i < _students.Length - 1)
+            {
+                _sb.Append(",");
+            }
+        }
+
+        return _sb.ToString();
     }
 }
