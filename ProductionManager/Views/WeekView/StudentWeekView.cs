@@ -10,11 +10,13 @@ public class StudentWeekView : Drawable
     private Font _font;
     private Pen _dashed = new Pen(Colors.Gray, 1f);
     private Pen _solidLines = new Pen(Colors.Black, 2f);
-    public StudentWeekView(StudentWeek studentWeek)
+    private bool ShowWeekNumbers;
+    public StudentWeekView(StudentWeek studentWeek,  bool showWeekNumbers = false)
     {
         _studentWeek = studentWeek;
         var ff = FontFamilies.Sans.Typefaces.First();
         _font = new Font(ff, 12);
+        ShowWeekNumbers = showWeekNumbers;
     }
 
     protected override void OnPaint(PaintEventArgs e)
@@ -43,6 +45,10 @@ public class StudentWeekView : Drawable
             }
             e.Graphics.DrawRectangle(_solidLines, x, y, w, h);
 
+            if (ShowWeekNumbers)
+            {
+                e.Graphics.DrawText(_font, b, x+4, Height/2- (_font.LineHeight/2), (i+1).ToString());
+            }
 
             i += p.Length - 1;//skip ahead for multi-week cells.
 

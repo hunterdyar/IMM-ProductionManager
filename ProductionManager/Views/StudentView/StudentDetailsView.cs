@@ -23,6 +23,7 @@ public class StudentDetailsView : GroupBox
     private void WeekToggleOnCheckedChanged(object? sender, EventArgs e)
     {
         _studentWeekView.Visible = _weekToggle.Checked;
+        _weekToggle.Text = _weekToggle.Checked ? "Hide Grades" : "Show Grades";
     }
 
     public Student? CurrentStudent { get; private set; }
@@ -32,7 +33,7 @@ public class StudentDetailsView : GroupBox
         CurrentStudent = student;
         _studentWeek = new StudentWeek(student, _mainWindow.DataStore);
         
-        _studentWeekView = new StudentWeekView(_studentWeek);
+        _studentWeekView = new StudentWeekView(_studentWeek, true);
        // _studentWeekView.MinimumSize = new Size(this.Width-100, 120);
         _studentWeekView.Width = this.Width;
         _studentWeekView.Height = 50;

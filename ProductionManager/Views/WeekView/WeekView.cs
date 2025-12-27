@@ -15,12 +15,14 @@ public class WeekView : GroupBox
         Content = gv;
         _studentWeekViews = new List<StudentWeekView>();
         var sws = mainWindow.DataStore.GetStudentWeeks();
-        foreach (var sw in sws)
-        { 
-            var swv =  new StudentWeekView(sw);
-            gv.Items.Add(swv);      
-            swv.MinimumSize = new Size(40*15, 20*mainWindow.DataStore.Students.Count);
+        for (var i = 0; i < sws.Count; i++)
+        {
+            var sw = sws[i];
+            var swv = new StudentWeekView(sw, i == 0);
+            gv.Items.Add(swv);
+            swv.MinimumSize = new Size(40 * 15, 20 * mainWindow.DataStore.Students.Count);
         }
+
         Content = gv;
     }
 }
