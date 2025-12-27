@@ -88,10 +88,15 @@ public class StudentWeekView : Drawable
         base.OnMouseMove(e);
         var mx = e.Location.X;
         mx -= _nameColW;
-        var wn = Single.Floor(mx / _baseWidth);
-        if (wn >= 0 && wn < 16)
+        var wn = Single.Floor(mx / _baseWidth)+1;
+        if (wn > 0 && wn <= 15)
         {
             _hoverManager.SetHoveredProject(_studentWeek.GetProjectForWeek((int)wn), this, e);
         }
+    }
+
+    public void SetDirty()
+    {
+        this.Invalidate();
     }
 }
