@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductionManager", "ProductionManager\ProductionManager.csproj", "{80A90681-BA16-4EBA-BCD4-D922A81F68FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductionManagerLinux", "ProductionManagerLinux\ProductionManagerLinux.csproj", "{9B09B4B3-FFA7-4C57-9B6F-B78F94CA352B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80A90681-BA16-4EBA-BCD4-D922A81F68FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80A90681-BA16-4EBA-BCD4-D922A81F68FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80A90681-BA16-4EBA-BCD4-D922A81F68FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80A90681-BA16-4EBA-BCD4-D922A81F68FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B09B4B3-FFA7-4C57-9B6F-B78F94CA352B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B09B4B3-FFA7-4C57-9B6F-B78F94CA352B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B09B4B3-FFA7-4C57-9B6F-B78F94CA352B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B09B4B3-FFA7-4C57-9B6F-B78F94CA352B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
