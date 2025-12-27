@@ -10,7 +10,7 @@ public class StudentDetailsView : GroupBox
     private ToggleButton _weekToggle;
     private StudentWeek _studentWeek;
     private StudentWeekView _studentWeekView;
-
+    private HoverManager _hoverManager = new HoverManager();
     public StudentDetailsView(MainWindow mainWindow)
     {
         _mainWindow = mainWindow;
@@ -33,7 +33,7 @@ public class StudentDetailsView : GroupBox
         CurrentStudent = student;
         _studentWeek = new StudentWeek(student, _mainWindow.DataStore);
         
-        _studentWeekView = new StudentWeekView(_studentWeek, true);
+        _studentWeekView = new StudentWeekView(_studentWeek, _hoverManager,true);
        // _studentWeekView.MinimumSize = new Size(this.Width-100, 120);
         _studentWeekView.Width = this.Width;
         _studentWeekView.Height = 50;

@@ -11,7 +11,7 @@ public class StudentWeek
         Projects = dataStore.Projects.Where(x=>x.Students.Contains(student)).ToList();
     }
     
-    public Project GetProjectForWeek(int week)
+    public Project? GetProjectForWeek(int week)
     {
         foreach (var project in Projects)
         {
@@ -26,6 +26,6 @@ public class StudentWeek
             }
         }
 
-        return Project.EmptyProject;
+        return null;
     }
 }

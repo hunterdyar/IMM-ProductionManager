@@ -5,8 +5,11 @@ namespace ProductionManager;
 
 public class Project
 {
-    public Student[] Students => _students;
+    //runtime data. i would prefer this wasn't here cus it'll break on reloads but whatever.
+    public bool Hovering = false;
 
+    //actual data
+    public Student[] Students => _students;
     public static Project EmptyProject = new Project()
     {
         _students = [],
@@ -108,5 +111,10 @@ public class Project
         }
 
         return _sb.ToString();
+    }
+
+    public override string ToString()
+    {
+        return $"project s({GetStudentsValue()}) w{Week} l{Length} {GetGradeValue().ToUpper()}";
     }
 }

@@ -11,36 +11,50 @@ public class StudentWeekView : Drawable
     private Pen _dashed = new Pen(Colors.Gray, 1f);
     private Pen _solidLines = new Pen(Colors.Black, 2f);
     private bool ShowWeekNumbers;
-    public StudentWeekView(StudentWeek studentWeek,  bool showWeekNumbers = false)
+    private HoverManager _hoverManager;
+
+    private int _baseWidth;
+    private int _nameColW;
+    public StudentWeekView(StudentWeek studentWeek, HoverManager hoverManager, bool showWeekNumbers = false)
     {
         _studentWeek = studentWeek;
         var ff = FontFamilies.Sans.Typefaces.First();
         _font = new Font(ff, 12);
         ShowWeekNumbers = showWeekNumbers;
+        _hoverManager = hoverManager;
     }
 
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
-        int nameColW = 50;
-        int baseWidth = (Width-nameColW) / 15;
+        _nameColW = 50;
+        _baseWidth = (Width-_nameColW) / 15;
         Brush b = new SolidBrush(Black);
         e.Graphics.DrawText(_font, b, 0, Height/2- (_font.LineHeight/2), _studentWeek.Student.ToString());
         for (int i = 0; i < 15; i++)
         {
             var p = _studentWeek.GetProjectForWeek(i+1);
+            
+            if (p == null)
+            {
+                p = Project.EmptyProject;
+            }
             var c = GetColor(p.Grade);
             var y = 0;
-            var x = nameColW+(i*baseWidth);
+            var x = _nameColW+(i*_baseWidth);
             var h = Height;
-            var w = baseWidth * p.Length;
+            var w = _baseWidth * p.Length;
             e.Graphics.FillRectangle(c, x, y, w, h);
+            if (p.Hovering)
+            {
+                e.Graphics.FillEllipse(Colors.Yellow, x, y, w, h);
+            }
             if (p.Length != 1)
             {
                 for (int j = 0; j < p.Length; j++)
                 {
-                    var dx = nameColW+((i+j)*baseWidth);
-                    e.Graphics.DrawRectangle(_dashed, dx, y, baseWidth, h);
+                    var dx = _nameColW+((i+j)*_baseWidth);
+                    e.Graphics.DrawRectangle(_dashed, dx, y, _baseWidth, h);
                 }
             }
             e.Graphics.DrawRectangle(_solidLines, x, y, w, h);
@@ -51,7 +65,6 @@ public class StudentWeekView : Drawable
             }
 
             i += p.Length - 1;//skip ahead for multi-week cells.
-
         }
     }
     
@@ -68,5 +81,17 @@ public class StudentWeekView : Drawable
         }
 
         return Color.Parse("#FFFFFF");
+    }
+
+    protected override void OnMouseMove(MouseEventArgs e)
+    {
+        base.OnMouseMove(e);
+        var mx = e.Location.X;
+        mx -= _nameColW;
+        var wn = Single.Floor(mx / _baseWidth);
+        if (wn >= 0 && wn < 16)
+        {
+            _hoverManager.SetHoveredProject(_studentWeek.GetProjectForWeek((int)wn), this, e);
+        }
     }
 }
