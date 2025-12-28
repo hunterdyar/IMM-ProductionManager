@@ -2,12 +2,15 @@ using Eto.Forms;
 
 namespace ProductionManager.Views;
 
+//todo: remove and move into WeekView.
 public class HoverManager
 {
     private Project? HoveredProject;
     private StudentWeekView? _hoveredWeekView;
-    public HoverManager()
+    private WeekView _weekView;
+    public HoverManager(WeekView weekView)
     {
+        _weekView = weekView;
     }
     public void SetHoveredProject(Project? project, StudentWeekView c, MouseEventArgs e)
     {
@@ -22,26 +25,31 @@ public class HoverManager
             if (_hoveredWeekView != null)
             {
                 _hoveredWeekView.SetDirty();
-                Console.WriteLine("set old hover week dirty");
             }
 
             if (c != null)
             {
                 c.SetDirty();
-                Console.WriteLine("set new hover week dirty");
-
             }
             _hoveredWeekView = c;
         }
         
         if(HoveredProject != project){
+            
+            if (HoveredProject != null && HoveredProject.Students.Length > 2)
+            {
+                _weekView?.Invalidate();
+            }
+            
             HoveredProject = project;
             if (HoveredProject != null)
             {
                 HoveredProject.Hovering = true;
-                Console.WriteLine($"set hover to {HoveredProject}");
+                if (HoveredProject.Students.Length > 1)
+                {
+                   _weekView?.Invalidate();
+                }
                 c.SetDirty();
-               //Console.WriteLine("HoveredProject: " + HoveredProject);
             }
         }
     }

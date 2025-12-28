@@ -60,6 +60,8 @@ public class Project
     {
         switch (grade.Trim().ToLower())
         {
+            case "b"://begun
+                return Grade.Started;
             case "s":
                 return Grade.Satisfactory;
             case "ns":
@@ -92,10 +94,11 @@ public class Project
                 return "s";
             case Grade.Unsatisfactory:
                 return "ns";
+            case Grade.Started:
+                return "b";
             default:
                 return "u";
         }
-        
     }
 
     private string GetStudentsValue()

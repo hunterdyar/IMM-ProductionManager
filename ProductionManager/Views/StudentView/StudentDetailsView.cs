@@ -10,7 +10,7 @@ public class StudentDetailsView : GroupBox
     private ToggleButton _weekToggle;
     private StudentWeek _studentWeek;
     private StudentWeekView _studentWeekView;
-    private HoverManager _hoverManager = new HoverManager();
+    private HoverManager _hoverManager = new HoverManager(null);
     public StudentDetailsView(MainWindow mainWindow)
     {
         _mainWindow = mainWindow;

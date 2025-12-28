@@ -6,7 +6,6 @@ namespace ProductionManager.Views;
 public class StudentWeekView : Drawable
 {
     private StudentWeek _studentWeek;
-    private Color Black = Color.Parse("#000000");
     private Font _font;
     private Pen _dashed = new Pen(Colors.Gray, 1f);
     private Pen _solidLines = new Pen(Colors.Black, 2f);
@@ -15,6 +14,8 @@ public class StudentWeekView : Drawable
 
     private int _baseWidth;
     private int _nameColW;
+
+    public Action<Project, StudentWeekView> OnClick;
     public StudentWeekView(StudentWeek studentWeek, HoverManager hoverManager, bool showWeekNumbers = false)
     {
         _studentWeek = studentWeek;
@@ -29,7 +30,7 @@ public class StudentWeekView : Drawable
         base.OnPaint(e);
         _nameColW = 50;
         _baseWidth = (Width-_nameColW) / 15;
-        Brush b = new SolidBrush(Black);
+        Brush b = new SolidBrush(Colors.Black);
         e.Graphics.DrawText(_font, b, 0, Height/2- (_font.LineHeight/2), _studentWeek.Student.ToString());
         for (int i = 0; i < 15; i++)
         {
@@ -73,11 +74,13 @@ public class StudentWeekView : Drawable
         switch (grade)
         {
             case Grade.NotStarted:
-                return Color.Parse("#CCCCCC");
+                return Colors.LightGrey;
             case Grade.Unsatisfactory:
-                return Color.Parse("#FF0000");
+                return Colors.DarkRed;
             case Grade.Satisfactory:
-                return Color.Parse("#00FF00");
+                return Colors.Green;
+            case Grade.Started:
+                return Colors.Gold;
         }
 
         return Color.Parse("#FFFFFF");
@@ -95,8 +98,21 @@ public class StudentWeekView : Drawable
         }
     }
 
+    protected override void OnMouseDown(MouseEventArgs e)
+    {
+        var mx = e.Location.X;
+        mx -= _nameColW;
+        var wn = Single.Floor(mx / _baseWidth)+1;
+        if (wn > 0 && wn <= 15)
+        { 
+            var p = _studentWeek.GetProjectForWeek((int)wn); 
+            OnClick?.Invoke(p,this);
+        }
+    }
+
     public void SetDirty()
     {
         this.Invalidate();
     }
+    
 }
