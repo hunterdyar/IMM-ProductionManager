@@ -14,7 +14,7 @@ public class Overview : GroupBox
         _mainWindow = mainWindow;
         var sv = new StudentView(mainWindow);
         var pv = new Label();
-        var wv = new WeekView(mainWindow);
+        var sem = new SemesterView(mainWindow);
         pv.Text = "projects view goes here";
         Content = new TabControl()
         {
@@ -22,9 +22,9 @@ public class Overview : GroupBox
                 {
                     Text = "Students",
                 },
-                new TabPage(wv)
+                new TabPage(sem)
                 {
-                    Text = "Weeks",
+                    Text = "Semester",
                 }
                 ,new TabPage(pv)
                 {

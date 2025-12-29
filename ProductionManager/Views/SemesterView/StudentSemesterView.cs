@@ -3,7 +3,7 @@ using Eto.Forms;
 
 namespace ProductionManager.Views;
 
-public class StudentWeekView : Drawable
+public class StudentSemesterView : Drawable
 {
     private StudentWeek _studentWeek;
     private Font _font;
@@ -15,8 +15,8 @@ public class StudentWeekView : Drawable
     private int _baseWidth;
     private int _nameColW;
 
-    public Action<Project, StudentWeekView> OnClick;
-    public StudentWeekView(StudentWeek studentWeek, HoverManager hoverManager, bool showWeekNumbers = false)
+    public Action<Project, StudentSemesterView> OnClick;
+    public StudentSemesterView(StudentWeek studentWeek, HoverManager hoverManager, bool showWeekNumbers = false)
     {
         _studentWeek = studentWeek;
         var ff = FontFamilies.Sans.Typefaces.First();
@@ -67,6 +67,11 @@ public class StudentWeekView : Drawable
 
             i += p.Length - 1;//skip ahead for multi-week cells.
         }
+
+        if (_hoverManager.HoveredStudentSemesterView == this)
+        {
+            _hoverManager.DoPaint(e);
+        }
     }
     
     private Color GetColor(Grade grade)
@@ -114,5 +119,11 @@ public class StudentWeekView : Drawable
     {
         this.Invalidate();
     }
-    
+
+    public PointF GetProjectScreenPosition(Project project)
+    {
+        var w = project.Week;
+        var x =_nameColW+(w*_baseWidth);
+        return PointToScreen(new PointF(x,0));
+    }
 }

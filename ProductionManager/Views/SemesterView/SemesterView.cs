@@ -3,30 +3,29 @@ using Eto.Forms;
 
 namespace ProductionManager.Views;
 
-public class WeekView : GroupBox
+public class SemesterView : GroupBox
 {
     private MainWindow _mainWindow;
-    private List<StudentWeekView> _studentWeekViews;
+    private List<StudentSemesterView> _studentWeekViews;
     private HoverManager _hoverManager;
     private ProjectDetailsView _projectDetailsView;
-    public WeekView(MainWindow mainWindow)
+    public SemesterView(MainWindow mainWindow)
     {
         _mainWindow = mainWindow;
         _hoverManager = new HoverManager(this);
         StackLayout gv = new StackLayout();
-        _studentWeekViews = new List<StudentWeekView>();
+        _studentWeekViews = new List<StudentSemesterView>();
         var sws = mainWindow.DataStore.GetStudentWeeks();
         for (var i = 0; i < sws.Count; i++)
         {
             var sw = sws[i];
-            var swv = new StudentWeekView(sw, _hoverManager,i == 0);
+            var swv = new StudentSemesterView(sw, _hoverManager,i == 0);
             swv.OnClick += OnClick;
             gv.Items.Add(swv);
             swv.MinimumSize = new Size(40 * 15, 20 * mainWindow.DataStore.Students.Count);
         }
-
-        _projectDetailsView = new ProjectDetailsView();
         
+        _projectDetailsView = new ProjectDetailsView();
         
         var splitter = new Splitter();
         splitter.Orientation = Orientation.Vertical;
@@ -35,7 +34,7 @@ public class WeekView : GroupBox
         Content = splitter;
     }
     
-    private void OnClick(Project project, StudentWeekView arg2)
+    private void OnClick(Project project, StudentSemesterView arg2)
     {
         _projectDetailsView.SetProjectView(project);
     }

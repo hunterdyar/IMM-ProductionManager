@@ -3,6 +3,7 @@ namespace ProductionManager;
 public class Settings
 {
     public static Settings Instance = new Settings();
+    //todo: load/save settings as single methods that save them here. 
     public virtual bool GetLastUsedItem(out string path)
     {
         var s = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);

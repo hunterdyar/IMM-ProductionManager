@@ -9,7 +9,7 @@ public class StudentDetailsView : GroupBox
     private MainWindow _mainWindow;
     private ToggleButton _weekToggle;
     private StudentWeek _studentWeek;
-    private StudentWeekView _studentWeekView;
+    private StudentSemesterView _studentSemesterView;
     private HoverManager _hoverManager = new HoverManager(null);
     public StudentDetailsView(MainWindow mainWindow)
     {
@@ -22,7 +22,7 @@ public class StudentDetailsView : GroupBox
 
     private void WeekToggleOnCheckedChanged(object? sender, EventArgs e)
     {
-        _studentWeekView.Visible = _weekToggle.Checked;
+        _studentSemesterView.Visible = _weekToggle.Checked;
         _weekToggle.Text = _weekToggle.Checked ? "Hide Grades" : "Show Grades";
     }
 
@@ -32,12 +32,11 @@ public class StudentDetailsView : GroupBox
     {
         CurrentStudent = student;
         _studentWeek = new StudentWeek(student, _mainWindow.DataStore);
-        
-        _studentWeekView = new StudentWeekView(_studentWeek, _hoverManager,true);
-       // _studentWeekView.MinimumSize = new Size(this.Width-100, 120);
-        _studentWeekView.Width = this.Width;
-        _studentWeekView.Height = 50;
-        _studentWeekView.Visible = _weekToggle.Checked;
+        _studentSemesterView = new StudentSemesterView(_studentWeek, _hoverManager,true);
+       // _studentSemesterView.MinimumSize = new Size(this.Width-100, 120);
+        _studentSemesterView.Width = this.Width;
+        _studentSemesterView.Height = 50;
+        _studentSemesterView.Visible = _weekToggle.Checked;
         
         var layout = new DynamicLayout();
         layout.Spacing = new Size(4,4);
@@ -68,7 +67,7 @@ public class StudentDetailsView : GroupBox
         //
         layout.Add(null);
         layout.BeginGroup("Grades");
-        layout.AddSeparateRow(_studentWeekView);
+        layout.AddSeparateRow(_studentSemesterView);
         layout.EndGroup();
         layout.EndVertical();
         
