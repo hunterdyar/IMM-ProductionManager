@@ -39,16 +39,16 @@ public class HoverManager
             if (HoveredProject != null && HoveredProject.Students.Length > 2)
             {
                 _weekView?.Invalidate();
+            }else if (project != null && project.Students.Length > 2)
+            {
+                _weekView?.Invalidate();
             }
             
             HoveredProject = project;
             if (HoveredProject != null)
             {
                 HoveredProject.Hovering = true;
-                if (HoveredProject.Students.Length > 1)
-                {
-                   _weekView?.Invalidate();
-                }
+                _weekView?.Invalidate();//f it, just brute force the redraw. its cheap anyway and none of this matters.
                 c.SetDirty();
             }
         }
