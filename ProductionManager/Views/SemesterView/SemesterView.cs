@@ -26,14 +26,24 @@ public class SemesterView : GroupBox
         }
         
         _projectDetailsView = new SingleProjectView(mainWindow,null,null);
-        
+        _projectDetailsView.NeedsUpdate += RedrawView;
         var splitter = new Splitter();
         splitter.Orientation = Orientation.Vertical;
         splitter.Panel1 = gv;
         splitter.Panel2 = _projectDetailsView;
         Content = splitter;
     }
-    
+
+    private void RedrawView()
+    {
+        //called when projects are created or destroyed
+        Invalidate();
+        foreach (var view in _studentWeekViews)
+        {
+            view.Invalidate();
+        }
+    }
+
     private void OnClick(Project project, StudentSemesterView arg2)
     {
         _projectDetailsView.SetProject(arg2.Student, project);

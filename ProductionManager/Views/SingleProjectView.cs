@@ -1,6 +1,8 @@
 using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Office2010.CustomUI;
 using Eto.Forms;
+using Command = Eto.Forms.Command;
+using ContextMenu = Eto.Forms.ContextMenu;
 using GroupBox = Eto.Forms.GroupBox;
 using Orientation = Eto.Forms.Orientation;
 using Size = Eto.Drawing.Size;
@@ -20,6 +22,7 @@ public class SingleProjectView : StackLayout
     private Student _student;
     //
     private readonly Label StudentName;
+    public Action NeedsUpdate;
 
     public SingleProjectView(MainWindow mainWindow, Student primary, Project project)
     {
@@ -28,15 +31,42 @@ public class SingleProjectView : StackLayout
         this.Orientation = Orientation.Horizontal;
         this.Height = ProjHeight;
         //
+       
+        //
         var nameBox = new GroupBox();
         nameBox.MinimumSize = new Size(200, ProjHeight);
         nameBox.Text = "Name";
         nameBox.Height = ProjHeight;
         StudentName = new Label();
+        
         nameBox.Content = StudentName;
         StudentName.Width = nameBox.MinimumSize.Width;
         Items.Add(nameBox);
         nameBox.Padding = 2;
+        //
+        //menu
+        StudentName.ContextMenu = new ContextMenu();
+        StudentName.ContextMenu.Items.Add(new Command(((sender, args) =>
+        {
+            var window = new AddStudentToProjectPopup(mainWindow,_project);
+            window.ShowModal();
+            NeedsUpdate?.Invoke();
+        }))
+        {
+            MenuText = "Edit Students",
+        });
+        StudentName.ContextMenu.Items.Add(new Command(((sender, args) =>
+        {
+            mainWindow.DataStore.RemoveProject(_project);
+            NeedsUpdate?.Invoke();
+        }))
+        {
+            MenuText = "Delete Project",
+        });
+
+        //in the current layout, there's nowhere to right click in this menu, so using student names.
+        this.ContextMenu = StudentName.ContextMenu;
+        
         //
         var weekLengthBox = new GroupBox();
         weekLengthBox.Text = "Week Count";

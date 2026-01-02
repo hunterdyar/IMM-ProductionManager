@@ -120,14 +120,7 @@ public class Project
     {
         return $"project s({GetStudentsValue()}) w{Week} l{Length} {GetGradeValue().ToUpper()}";
     }
-
-    public void AddStudent(Student student)
-    {
-        if (!_students.Contains(student))
-        {
-            _students = _students.Concat([student]).ToArray();
-        }
-    }
+    
     public static Project Create(Student student, int selectedWeek)
     {
         var p = new Project()
@@ -140,5 +133,30 @@ public class Project
             Rubric = ""
         };
         return p;
+    }
+
+    public bool TryAddStudent(Student student)
+    {
+        //if that student already has a project that week, then we shouldn't create any invalid state.
+        
+        
+        if (!_students.Contains(student))
+        {
+            _students = _students.Concat([student]).ToArray();
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool TryRemoveStudent(Student student)
+    {
+        if (_students.Contains(student) && _students.Length > 1)
+        {
+            _students = _students.Except([student]).ToArray();
+            return true;
+        }
+
+        return false;
     }
 }

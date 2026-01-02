@@ -41,6 +41,7 @@ public class SingleWeekView : StackLayout
             if(_mainWindow.DataStore.TryGetProject(student, SelectedWeek, out Project project))
             {
                 var p = new SingleProjectView(_mainWindow, student, project);
+                p.NeedsUpdate += RemakeList;
                 _projects.Items.Add(p);
             }
             else

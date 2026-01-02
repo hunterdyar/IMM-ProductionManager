@@ -144,4 +144,10 @@ public class DataStore
         _projects.Add(create);
         _dirty = true;
     }
+
+    public void RemoveProject(Project project)
+    {
+        _projects.Remove(project);
+        _dirty = true;
+    }
 }
