@@ -23,6 +23,19 @@ public class StudentSemesterView : Drawable
         _font = new Font(ff, 12);
         ShowWeekNumbers = showWeekNumbers;
         _hoverManager = hoverManager;
+        foreach (var project in studentWeek.Projects)
+        {
+            project.OnChange += SetDirty;
+        }
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        base.Dispose(disposing);
+        foreach (var project in _studentWeek.Projects)
+        {
+            project.OnChange += SetDirty;
+        }
     }
 
     public Student Student => _studentWeek.Student;
@@ -87,7 +100,7 @@ public class StudentSemesterView : Drawable
             case Grade.Satisfactory:
                 return Colors.Green;
             case Grade.Started:
-                return Colors.Gold;
+                return Colors.Lavender;
         }
 
         return Color.Parse("#FFFFFF");

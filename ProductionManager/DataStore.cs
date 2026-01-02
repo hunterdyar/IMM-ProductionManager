@@ -150,4 +150,10 @@ public class DataStore
         _projects.Remove(project);
         _dirty = true;
     }
+
+    public void AddStudent(Student student)
+    {
+        _students.Add(student);
+        _dirty = true;
+    }
 }

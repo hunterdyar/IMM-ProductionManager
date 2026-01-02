@@ -17,6 +17,7 @@ public class SingleProjectView : StackLayout
     private TextBox _rubricTextBox;
     private TextArea _noteTextArea;
     private DropDown _rubricQuickPickDropdown;
+    private GroupBox _weekLengthGroupBox;
     private TextBox _weeksTextBox;
     private Project _project;
     private Student _student;
@@ -68,10 +69,10 @@ public class SingleProjectView : StackLayout
         this.ContextMenu = StudentName.ContextMenu;
         
         //
-        var weekLengthBox = new GroupBox();
-        weekLengthBox.Text = "Week Count";
-        weekLengthBox.Height = ProjHeight;
-        weekLengthBox.Padding = 2;
+        _weekLengthGroupBox = new GroupBox();
+        _weekLengthGroupBox.Text = $"Week Length";
+        _weekLengthGroupBox.Height = ProjHeight;
+        _weekLengthGroupBox.Padding = 2;
         _weeksTextBox = new TextBox();
         _weeksTextBox.TextChanging += (sender, args) =>
         {
@@ -94,8 +95,8 @@ public class SingleProjectView : StackLayout
                 _project.Length = i;
             }
         };
-        weekLengthBox.Content = _weeksTextBox;
-        Items.Add(weekLengthBox);
+        _weekLengthGroupBox.Content = _weeksTextBox;
+        Items.Add(_weekLengthGroupBox);
         //
         _rubricQuickPickDropdown =  new DropDown();
         _rubricQuickPickDropdown.Height = ProjHeight / 4;
@@ -169,7 +170,7 @@ public class SingleProjectView : StackLayout
         {
             return;
         }
-        
+        _weekLengthGroupBox.Text = $"Week {project.Week}, Length";
         StudentName.Text = student.ToString();
         if (project.Students.Length > 1)
         {
@@ -190,21 +191,7 @@ public class SingleProjectView : StackLayout
         //
         _weeksTextBox.Text = $"{project.Length}";
         //set grade
-        switch (project.Grade)
-        {
-            case Grade.NotStarted:
-                _grade.SelectedIndex = 0;
-                break;
-            case Grade.Started:
-                _grade.SelectedIndex = 1;
-                break;
-            case Grade.Satisfactory:
-                _grade.SelectedIndex = 2;
-                break;
-            default:
-                _grade.SelectedIndex = -1;
-                break;
-        }
+       _grade.SetGrade(project.Grade);
 
         _rubricQuickPickDropdown.Items.Clear();
         foreach (var rubric in _mainWindow.DataStore._allRubrics)

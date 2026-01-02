@@ -66,4 +66,30 @@ public class GradeDropdown : DropDown
 
         return Colors.White;
     }
+
+    public void SetGrade(Grade grade)
+    {
+        //Items.Add("Not Started");
+        // Items.Add("Started");
+        // Items.Add("Satisfactory");
+        // Items.Add("Not Satisfactory");
+        switch (grade)
+        {
+            case Grade.NotStarted:
+                SelectedIndex = 0;
+                break;
+            case Grade.Started:
+                SelectedIndex = 1;
+                break;
+            case Grade.Satisfactory:
+                SelectedIndex = 2;
+                break;
+            case Grade.Unsatisfactory:
+                SelectedIndex = 3;
+                break;
+            default:
+                SelectedIndex = -1;
+                break;
+        }
+    }
 }

@@ -17,13 +17,23 @@ public class StudentView : GroupBox
             _details.SetStudent(student);
         };
         
+        var layout = new DynamicLayout();
+        layout.BeginHorizontal();
+        layout.Add(new Button((e, a) =>
+        {
+            var p = new MakeStudentPopup(mainWindow);
+            p.ShowModal();
+            _listView.Refresh();
+        })
+        {
+            Text = "New Student",
+        });
+        layout.EndHorizontal();
         Splitter splitter = new Splitter();
         splitter.Orientation = Orientation.Vertical;
         splitter.Panel1 = _listView;
         splitter.Panel2 = _details;
-        
-        
-        
-        Content = splitter;
+        layout.AddRow(splitter);
+        Content = layout;
     }
 }

@@ -17,11 +17,49 @@ public class Project
     };
 
     private Student[] _students;
-    public int Week;
-    public int Length = 1;
+
+    public int Week
+    {
+        get
+        {
+            return _week;
+        }
+        set
+        {
+            _week = value;
+            OnChange?.Invoke();
+        }
+    }
+    private int _week;
+
+    public int Length {
+        get
+        {
+            return _length;
+        }
+        set
+        {
+            _length = value;
+            OnChange?.Invoke();
+        }
+    }
+    private int _length = 1;
     public string Rubric = "";
     public string Note = "";
-    public Grade Grade;
+    public Grade Grade
+    {
+        get
+        {
+            return _grade;
+        }
+        set
+        {
+            _grade = value;
+            OnChange?.Invoke();
+        }
+    }
+    private Grade _grade;
+    public Action OnChange;
 
     public static Project ProjectFromRow(IXLRow row, DataStore dataStore)
     {
@@ -143,6 +181,7 @@ public class Project
         if (!_students.Contains(student))
         {
             _students = _students.Concat([student]).ToArray();
+            OnChange?.Invoke();
             return true;
         }
 
@@ -154,6 +193,7 @@ public class Project
         if (_students.Contains(student) && _students.Length > 1)
         {
             _students = _students.Except([student]).ToArray();
+            OnChange?.Invoke();
             return true;
         }
 

@@ -40,7 +40,7 @@ public class SemesterView : GroupBox
         Invalidate();
         foreach (var view in _studentWeekViews)
         {
-            view.Invalidate();
+            view.SetDirty();
         }
     }
 
