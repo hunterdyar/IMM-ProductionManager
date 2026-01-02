@@ -164,12 +164,18 @@ public class SingleProjectView : StackLayout
 
     public void SetProject(Student student, Project project)
     {
+        if (_project != null)
+        {
+            _project.OnChange -= OnChange;
+        }
         _project = project;
         _student = student;
         if (student == null || project == null)
         {
             return;
         }
+        _project.OnChange += OnChange;
+
         _weekLengthGroupBox.Text = $"Week {project.Week}, Length";
         StudentName.Text = student.ToString();
         if (project.Students.Length > 1)
@@ -203,5 +209,16 @@ public class SingleProjectView : StackLayout
         
         _noteTextArea.Text = project.Note;
         
+    }
+
+    private void OnChange()
+    {
+       SetProject(_student, _project);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        _project.OnChange -= OnChange;
+        base.Dispose(disposing);
     }
 }
