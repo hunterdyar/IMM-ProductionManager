@@ -10,7 +10,6 @@ class Program
     public static void Main(string[] args)
     {
         Settings.Instance = new Settings();
-        var f = new Settings().GetLastUsedItem(out var p);
-        new Application().Run(new MainWindow(p));
+        new Application().Run(new MainWindow(Settings.Instance.LastUsedPath));
     }
 }

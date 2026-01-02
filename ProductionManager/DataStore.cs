@@ -68,42 +68,42 @@ public class DataStore
             _projects.Add(Project.ProjectFromRow(row, this));
         }
         
-        Settings.Instance.SetLastUsedItem(_backingStore.FullName);
+        Settings.Instance.LastUsedPath =_backingStore.FullName;
         _dirty = false;
     }
 
-    private void SaveToBacking(bool onlyIfDirty = true)
+    public void SaveToBacking(bool onlyIfDirty = true)
     {
         _workbook = new XLWorkbook();
         var studentSheet = _workbook.AddWorksheet("students");
         var projSheet = _workbook.AddWorksheet("projects");
 
         //add headers
-        studentSheet.Row(0).Cell("A").Value = "first name";
-        studentSheet.Row(0).Cell("B").Value = "last name";
-        studentSheet.Row(0).Cell("C").Value = "ID";
-        studentSheet.Row(0).Cell("D").Value = "section";
-        studentSheet.Row(0).Cell("E").Value = "level";
+        studentSheet.Row(1).Cell("A").Value = "first name";
+        studentSheet.Row(1).Cell("B").Value = "last name";
+        studentSheet.Row(1).Cell("C").Value = "ID";
+        studentSheet.Row(1).Cell("D").Value = "section";
+        studentSheet.Row(1).Cell("E").Value = "level";
         
-        projSheet.Row(0).Cell("A").Value = "students";
-        projSheet.Row(0).Cell("B").Value = "week";
-        projSheet.Row(0).Cell("C").Value = "length";
-        projSheet.Row(0).Cell("D").Value = "rubric";
-        projSheet.Row(0).Cell("E").Value = "note";
-        projSheet.Row(0).Cell("F").Value = "grade";
+        projSheet.Row(1).Cell("A").Value = "students";
+        projSheet.Row(1).Cell("B").Value = "week";
+        projSheet.Row(1).Cell("C").Value = "length";
+        projSheet.Row(1).Cell("D").Value = "rubric";
+        projSheet.Row(1).Cell("E").Value = "note";
+        projSheet.Row(1).Cell("F").Value = "grade";
 
         for (var i = 0; i < _students.Count; i++)
         {
             var student = _students[i];
-            student.SetToRow(studentSheet.Row(i+1));
+            student.SetToRow(studentSheet.Row(i+2));
         }
         for (var i = 0; i < _projects.Count; i++)
         {
             var project = _projects[i];
-            project.SetToRow(projSheet.Row(i+1));
+            project.SetToRow(projSheet.Row(i+2));
         }
         
-        _workbook.SaveAs(_workbookFile.FullName);
+        _workbook.SaveAs(_backingStore.FullName);
     }
 
 
@@ -124,5 +124,16 @@ public class DataStore
         id = id.Trim();
         o = _students.Find(x => x.StudentID == id);
         return o != null;
+    }
+
+    public bool TryGetProject(Student student, int week, out Project project)
+    {
+        project = Projects.Where(x=>x.Students.Contains(student)).FirstOrDefault(x=>x.Week == week || (x.Week < week && x.Week+x.Length > week));
+        if (project == null)
+        {
+            project = null;
+            return false;
+        }
+        return true;
     }
 }

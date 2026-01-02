@@ -25,14 +25,16 @@ public class StudentSemesterView : Drawable
         _hoverManager = hoverManager;
     }
 
+    public Student Student => _studentWeek.Student;
+
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
         _nameColW = 50;
-        _baseWidth = (Width-_nameColW) / 15;
+        _baseWidth = (Width-_nameColW) / Settings.TotalWeeks;
         Brush b = new SolidBrush(Colors.Black);
         e.Graphics.DrawText(_font, b, 0, Height/2- (_font.LineHeight/2), _studentWeek.Student.ToString());
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < Settings.TotalWeeks; i++)
         {
             var p = _studentWeek.GetProjectForWeek(i+1);
             
@@ -97,7 +99,7 @@ public class StudentSemesterView : Drawable
         var mx = e.Location.X;
         mx -= _nameColW;
         var wn = Single.Floor(mx / _baseWidth)+1;
-        if (wn > 0 && wn <= 15)
+        if (wn > 0 && wn <= Settings.TotalWeeks)
         {
             _hoverManager.SetHoveredProject(_studentWeek.GetProjectForWeek((int)wn), this, e);
         }
@@ -108,7 +110,7 @@ public class StudentSemesterView : Drawable
         var mx = e.Location.X;
         mx -= _nameColW;
         var wn = Single.Floor(mx / _baseWidth)+1;
-        if (wn > 0 && wn <= 15)
+        if (wn > 0 && wn <= Settings.TotalWeeks)
         { 
             var p = _studentWeek.GetProjectForWeek((int)wn); 
             OnClick?.Invoke(p,this);

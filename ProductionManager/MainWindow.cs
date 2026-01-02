@@ -48,4 +48,11 @@ public class MainWindow : Form
         }
         this.UpdateLayout();
     }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        Settings.Instance.SaveIfNeeded();
+        DataStore?.SaveToBacking();
+        base.OnClosed(e);
+    }
 }

@@ -8,7 +8,7 @@ public class SemesterView : GroupBox
     private MainWindow _mainWindow;
     private List<StudentSemesterView> _studentWeekViews;
     private HoverManager _hoverManager;
-    private ProjectDetailsView _projectDetailsView;
+    private SingleProjectView _projectDetailsView;
     public SemesterView(MainWindow mainWindow)
     {
         _mainWindow = mainWindow;
@@ -22,10 +22,10 @@ public class SemesterView : GroupBox
             var swv = new StudentSemesterView(sw, _hoverManager,i == 0);
             swv.OnClick += OnClick;
             gv.Items.Add(swv);
-            swv.MinimumSize = new Size(40 * 15, 20 * mainWindow.DataStore.Students.Count);
+            swv.MinimumSize = new Size(40 * Settings.TotalWeeks, 20 * mainWindow.DataStore.Students.Count);
         }
         
-        _projectDetailsView = new ProjectDetailsView();
+        _projectDetailsView = new SingleProjectView(null,null);
         
         var splitter = new Splitter();
         splitter.Orientation = Orientation.Vertical;
@@ -36,6 +36,6 @@ public class SemesterView : GroupBox
     
     private void OnClick(Project project, StudentSemesterView arg2)
     {
-        _projectDetailsView.SetProjectView(project);
+        _projectDetailsView.SetProject(arg2.Student, project);
     }
 }
