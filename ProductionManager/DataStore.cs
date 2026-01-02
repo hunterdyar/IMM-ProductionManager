@@ -22,6 +22,7 @@ public class DataStore
 
     private bool _dirty = false;
     public static Action<DataStore> OnCreated;
+    public string[] _allRubrics;
     public DataStore(string filePath, bool createOrOverwrite = false)
     {
         _backingStore = new FileInfo(filePath);
@@ -68,6 +69,7 @@ public class DataStore
             _projects.Add(Project.ProjectFromRow(row, this));
         }
         
+        _allRubrics = _projects.Select(x=>x.Rubric).Distinct().ToArray();
         Settings.Instance.LastUsedPath =_backingStore.FullName;
         _dirty = false;
     }

@@ -8,7 +8,6 @@ public class SingleWeekView : StackLayout
     
     private DropDown _dropDown;
     private StackLayout _projects;
-
     private MainWindow _mainWindow;
     //a drop-down box at the top to pick a week (saved/remembered)
     //a list of what each student is working on this single week (project details)
@@ -21,11 +20,13 @@ public class SingleWeekView : StackLayout
             _dropDown.Items.Add((i+1).ToString());
         }
         
-        _dropDown.SelectedIndex = Settings.Instance.SelectedWeek;
+        _dropDown.SelectedIndex = Settings.Instance.SelectedWeek-1;
         _dropDown.SelectedValueChanged += DropDownOnSelectedValueChanged;
         Items.Add(_dropDown);
         RemakeList();
-        Items.Add(_projects);
+        var scrollable = new Scrollable();
+        scrollable.Content = _projects;
+        Items.Add(scrollable);
     }
 
     void RemakeList()
@@ -39,7 +40,7 @@ public class SingleWeekView : StackLayout
         {
             if(_mainWindow.DataStore.TryGetProject(student, SelectedWeek, out Project project))
             {
-                var p = new SingleProjectView(student, project);
+                var p = new SingleProjectView(_mainWindow, student, project);
                 _projects.Items.Add(p);
             }
             else
@@ -51,9 +52,7 @@ public class SingleWeekView : StackLayout
     private void DropDownOnSelectedValueChanged(object? sender, EventArgs e)
     {
         var selected = _dropDown.SelectedIndex;
-        Settings.Instance.SelectedWeek = selected;
-       
-
+        Settings.Instance.SelectedWeek = selected+1;
         RemakeList();
     }
 }

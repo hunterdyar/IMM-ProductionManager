@@ -1,0 +1,69 @@
+using Eto.Drawing;
+using Eto.Forms;
+
+namespace ProductionManager.Views;
+
+public class GradeDropdown : DropDown
+{
+    public Action<Grade> OnSelectedGradeChanged;
+    public GradeDropdown() : base()
+    {
+        Items.Add("Not Started");
+        Items.Add("Started");
+        Items.Add("Satisfactory");
+        Items.Add("Not Satisfactory");
+        SelectedValueChanged += OnSelectedValueChanged;
+        //this.BackgroundColor = GetDropdownBackgroundColor(SelectedGrade());
+    }
+
+    public Grade SelectedGrade()
+    {
+        var i = SelectedIndex;
+        Grade g = Grade.Unknown;
+        switch (i)
+        {
+            case 0:
+                g = Grade.NotStarted;
+                break;
+            case 1:
+                g = Grade.Started;
+                break;
+            case 2:
+                g = Grade.Satisfactory;
+                break;
+            case 3:
+                g = Grade.Unsatisfactory;
+                break;
+            // case -1:
+            default:
+                g = Grade.Unknown;
+                break;
+        }
+
+        return g;
+    }
+    private void OnSelectedValueChanged(object? sender, EventArgs e)
+    {
+        var g = SelectedGrade();
+       // this.BackgroundColor = GetDropdownBackgroundColor(g);
+        
+        OnSelectedGradeChanged?.Invoke(g);
+    }
+
+    private static Color GetDropdownBackgroundColor(Grade grade)
+    {
+        switch (grade)
+        {
+            case Grade.Satisfactory:
+                return Colors.Green;
+            case Grade.Unsatisfactory:
+                return Colors.Red;
+            case Grade.NotStarted:
+                return Colors.LightGrey;
+            case Grade.Started:
+                return Colors.Lavender;
+        }
+
+        return Colors.White;
+    }
+}

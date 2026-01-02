@@ -25,7 +25,7 @@ public class SemesterView : GroupBox
             swv.MinimumSize = new Size(40 * Settings.TotalWeeks, 20 * mainWindow.DataStore.Students.Count);
         }
         
-        _projectDetailsView = new SingleProjectView(null,null);
+        _projectDetailsView = new SingleProjectView(mainWindow,null,null);
         
         var splitter = new Splitter();
         splitter.Orientation = Orientation.Vertical;

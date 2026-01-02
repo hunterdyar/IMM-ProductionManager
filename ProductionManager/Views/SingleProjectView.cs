@@ -1,67 +1,129 @@
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Office2010.CustomUI;
 using Eto.Forms;
+using GroupBox = Eto.Forms.GroupBox;
+using Orientation = Eto.Forms.Orientation;
+using Size = Eto.Drawing.Size;
 
 namespace ProductionManager.Views;
 
 public class SingleProjectView : StackLayout
 {
-    private readonly DropDown _grade;
+    public const int ProjHeight = 100;
+    private MainWindow _mainWindow;
+    private readonly GradeDropdown _grade;
+    private TextBox _rubricTextBox;
+    private TextArea _noteTextArea;
+    private DropDown _rubricQuickPickDropdown;
+    private TextBox _weeksTextBox;
     private Project _project;
     private Student _student;
-
     //
     private readonly Label StudentName;
-    private readonly Label _weekLength;
-    private readonly Label _rubric;
 
-    public SingleProjectView(Student primary, Project project)
+    public SingleProjectView(MainWindow mainWindow, Student primary, Project project)
     {
+        _mainWindow = mainWindow;
         _project = project;
         this.Orientation = Orientation.Horizontal;
-
+        this.Height = ProjHeight;
+        //
+        var nameBox = new GroupBox();
+        nameBox.MinimumSize = new Size(200, ProjHeight);
+        nameBox.Text = "Name";
+        nameBox.Height = ProjHeight;
         StudentName = new Label();
-        Items.Add(StudentName);
+        nameBox.Content = StudentName;
+        StudentName.Width = nameBox.MinimumSize.Width;
+        Items.Add(nameBox);
+        nameBox.Padding = 2;
         //
-        _weekLength = new Label();
-        Items.Add(_weekLength);
+        var weekLengthBox = new GroupBox();
+        weekLengthBox.Text = "Week Count";
+        weekLengthBox.Height = ProjHeight;
+        weekLengthBox.Padding = 2;
+        _weeksTextBox = new TextBox();
+        _weeksTextBox.TextChanging += (sender, args) =>
+        {
+            if (!int.TryParse(args.NewText, out int i))
+            {
+                args.Cancel = true;
+            }
+            else
+            {
+                if (i < 0)
+                {
+                    args.Cancel = true;
+                }
+            }
+        };
+        _weeksTextBox.TextChanged += (sender, args) =>
+        {
+            if (int.TryParse(_weeksTextBox.Text, out int i))
+            {
+                _project.Length = i;
+            }
+        };
+        weekLengthBox.Content = _weeksTextBox;
+        Items.Add(weekLengthBox);
         //
-        _rubric = new Label();
-        Items.Add(_rubric);
+        _rubricQuickPickDropdown =  new DropDown();
+        _rubricQuickPickDropdown.Height = ProjHeight / 4;
+        _rubricQuickPickDropdown.SelectedValueChanged += (sender, args) =>
+        {
+            var i = _rubricQuickPickDropdown.SelectedIndex;
+            _rubricTextBox.Text = _rubricQuickPickDropdown.Items[i].Text;
+        };
+        GroupBox rubricGroupBox = new GroupBox();
+        rubricGroupBox.Padding = 2;
+        rubricGroupBox.Text = "Rubric";
+        var rgblayout = new DynamicLayout();
+        rgblayout.BeginVertical();
+        rgblayout.Add(_rubricQuickPickDropdown);
+        
+        _rubricTextBox = new TextBox();
+        _rubricTextBox.ToolTip = "Rubric";
+        _rubricTextBox.TextChanged += (sender, args) =>
+        {
+            _project.Rubric = _rubricTextBox.Text;
+        };
+        
+        rgblayout.Add(_rubricTextBox);
+        rgblayout.EndVertical();
+        rubricGroupBox.Content = rgblayout;
+        Items.Add(rubricGroupBox);
         //
-        _grade = new DropDown();
-        _grade.Items.Add("Not Started");
-        _grade.Items.Add("Started");
-        _grade.Items.Add("Satisfactory");
-        _grade.Items.Add("Not Satisfactory");
-        _grade.SelectedValueChanged += GradeOnSelectedValueChanged;
-        Items.Add(_grade);
+        
+        //
+       
+        //
+        var noteGroupbox = new GroupBox();
+        noteGroupbox.Padding = 2;
+        noteGroupbox.Text = "Note";
+        _noteTextArea = new TextArea();
+        _noteTextArea.TextChanged += (sender, args) =>
+        {
+            _project.Note = _noteTextArea.Text;
+        };
+        noteGroupbox.Content = _noteTextArea;
+        noteGroupbox.Height = ProjHeight;
+        Items.Add(noteGroupbox);
+        //
+        var gradeBox = new GroupBox();
+        gradeBox.Padding = 2;
+        gradeBox.Height = ProjHeight;
+        gradeBox.Text = "Grade";
+        _grade = new GradeDropdown();
+        _grade.OnSelectedGradeChanged += GradeOnSelectedValueChanged;
+        gradeBox.Content = _grade;
+        Items.Add(null);//space to push grade to the right.
+        Items.Add(gradeBox);
         SetProject(primary, project);
     }
 
     
-    private void GradeOnSelectedValueChanged(object? sender, EventArgs e)
+    private void GradeOnSelectedValueChanged(Grade g)
     {
-        var i = _grade.SelectedIndex;
-        Grade g = Grade.Unknown;
-        switch (i)
-        {
-            case 0:
-                g = Grade.NotStarted;
-                break;
-            case 1:
-                g = Grade.Started;
-                break;
-            case 2:
-                g = Grade.Satisfactory;
-                break;
-            case 3:
-                g = Grade.Unsatisfactory;
-                break;
-            case -1:
-            default:
-                g = Grade.Unknown;
-                break;
-        }
-
         if (g != Grade.NotStarted && g != Grade.Unknown)
         {
             _project.Grade = g;
@@ -96,8 +158,7 @@ public class SingleProjectView : StackLayout
         }
         
         //
-        _weekLength.Text = $"Length: {project.Length}";
-        _rubric.Text = $"Rubric: {project.Rubric}";
+        _weeksTextBox.Text = $"{project.Length}";
         //set grade
         switch (project.Grade)
         {
@@ -114,5 +175,16 @@ public class SingleProjectView : StackLayout
                 _grade.SelectedIndex = -1;
                 break;
         }
+
+        _rubricQuickPickDropdown.Items.Clear();
+        foreach (var rubric in _mainWindow.DataStore._allRubrics)
+        {
+            _rubricQuickPickDropdown.Items.Add(rubric);
+        }
+        var index = Array.IndexOf(_mainWindow.DataStore._allRubrics,project.Rubric);
+        _rubricQuickPickDropdown.SelectedIndex = index;//-1 is valid right?
+        
+        _noteTextArea.Text = project.Note;
+        
     }
 }
