@@ -50,7 +50,7 @@ public class DataStore
         }
     }
 
-    private void LoadFromBacking()
+    public void LoadFromBacking()
     {
         _workbook = new XLWorkbook(_backingStore.FullName);
 
