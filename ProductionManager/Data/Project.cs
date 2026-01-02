@@ -120,4 +120,25 @@ public class Project
     {
         return $"project s({GetStudentsValue()}) w{Week} l{Length} {GetGradeValue().ToUpper()}";
     }
+
+    public void AddStudent(Student student)
+    {
+        if (!_students.Contains(student))
+        {
+            _students = _students.Concat([student]).ToArray();
+        }
+    }
+    public static Project Create(Student student, int selectedWeek)
+    {
+        var p = new Project()
+        {
+            _students = [student],
+            Week = selectedWeek,
+            Length = 1,
+            Grade = Grade.NotStarted,
+            Note = "",
+            Rubric = ""
+        };
+        return p;
+    }
 }

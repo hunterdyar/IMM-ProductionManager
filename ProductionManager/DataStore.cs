@@ -138,4 +138,10 @@ public class DataStore
         }
         return true;
     }
+
+    public void AddProject(Project create)
+    {
+        _projects.Add(create);
+        _dirty = true;
+    }
 }

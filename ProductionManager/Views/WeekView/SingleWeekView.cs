@@ -45,7 +45,18 @@ public class SingleWeekView : StackLayout
             }
             else
             {
-                //No project set. Add or Join?
+                var createProject = new GroupBox();
+                createProject.Text = student.ToString();
+                var button = new Button();
+                button.Text = "Create";
+                button.Click += (sender, args) =>
+                {
+                    _mainWindow.DataStore.AddProject(Project.Create(student, SelectedWeek));
+                    Console.WriteLine("Created Project");
+                    RemakeList();
+                };
+                createProject.Content = button;
+                _projects.Items.Add(createProject);
             }
         }
     }
