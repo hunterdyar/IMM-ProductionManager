@@ -100,7 +100,7 @@ public class StudentSemesterView : Drawable
             case Grade.Satisfactory:
                 return Colors.Green;
             case Grade.Started:
-                return Colors.Lavender;
+                return Colors.DeepSkyBlue;
         }
 
         return Color.Parse("#FFFFFF");
