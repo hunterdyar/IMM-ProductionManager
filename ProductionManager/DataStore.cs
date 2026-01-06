@@ -26,9 +26,16 @@ public class DataStore
     public DataStore(string filePath, bool createOrOverwrite = false)
     {
         _backingStore = new FileInfo(filePath);
-        if (_backingStore.Exists)
+        if (!createOrOverwrite)
         {
-            LoadFromBacking();
+            if (_backingStore.Exists)
+            {
+                LoadFromBacking();
+            }
+            else
+            {
+                throw new Exception($"Cannot open {filePath}, file does not exist.");
+            }
         }
         else if (createOrOverwrite)
         {

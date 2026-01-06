@@ -63,8 +63,16 @@ public class Settings
         {
             var read = fi.OpenText().ReadToEnd();
             var lines = read.Split(Environment.NewLine);
-            _lastUsedPath = lines[0];
-            if (int.TryParse(lines[1], out var week))
+            if (lines.Length > 0)
+            {
+                _lastUsedPath = lines[0];
+            }
+            else
+            {
+                _lastUsedPath = "";
+            }
+
+            if (lines.Length > 1 && int.TryParse(lines[1], out var week))
             {
                 _selectedWeek = week;
             }

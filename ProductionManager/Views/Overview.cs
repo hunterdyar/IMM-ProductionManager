@@ -17,12 +17,13 @@ public class Overview : GroupBox
         var pv = new Label();
         var sem = new SemesterView(mainWindow);
         pv.Text = "projects view goes here";
-        Content = new TabControl()
+        var tc = new TabControl()
         {
-            Pages = { new TabPage(sv)
-                {
-                    Text = "Students",
-                },
+            Pages = { 
+                new TabPage(sv)
+                 {
+                     Text = "Students",
+                 },
                 new TabPage(week)
                 {
                     Text = "Week",
@@ -36,7 +37,8 @@ public class Overview : GroupBox
                     Text = "All Projects",
                 } 
             },
-            SelectedIndex = 1,
         };
+       // tc.SelectedIndex = 1;
+        Content = tc;
     }
 }

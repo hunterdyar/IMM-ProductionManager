@@ -15,6 +15,7 @@ public class SingleWeekView : StackLayout
     {
         _mainWindow = mainWindow;
         _dropDown = new DropDown();
+        _projects = new StackLayout();
         for (int i = 0; i < Settings.TotalWeeks; i++)
         {
             _dropDown.Items.Add((i+1).ToString());
@@ -23,6 +24,7 @@ public class SingleWeekView : StackLayout
         _dropDown.SelectedIndex = Settings.Instance.SelectedWeek-1;
         _dropDown.SelectedValueChanged += DropDownOnSelectedValueChanged;
         Items.Add(_dropDown);
+        
         RemakeList();
         var scrollable = new Scrollable();
         scrollable.Content = _projects;
@@ -31,11 +33,11 @@ public class SingleWeekView : StackLayout
 
     void RemakeList()
     {
-        if (_projects == null)
-        {
-            _projects = new StackLayout();
-        }
         _projects.Items.Clear();
+        if (_mainWindow.DataStore.Students.Count == 0)
+        {
+            return;
+        }
         foreach (var student in _mainWindow.DataStore.Students)
         {
             if(_mainWindow.DataStore.TryGetProject(student, SelectedWeek, out Project project))

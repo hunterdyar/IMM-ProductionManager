@@ -15,6 +15,8 @@ public class MainWindow : Form
 
     public MainWindow(string filePath)
     {
+        Width = 800;
+        Height = 1200;
         if (!String.IsNullOrEmpty(filePath))
         {
             FileInfo fi = new FileInfo(filePath);

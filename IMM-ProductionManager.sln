@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductionManager", "Produc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductionManagerLinux", "ProductionManagerLinux\ProductionManagerLinux.csproj", "{9B09B4B3-FFA7-4C57-9B6F-B78F94CA352B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductionManagerWin", "ProductionManagerWin\ProductionManagerWin.csproj", "{E547A672-E9F7-461A-9E52-C1719FD3F87D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{9B09B4B3-FFA7-4C57-9B6F-B78F94CA352B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B09B4B3-FFA7-4C57-9B6F-B78F94CA352B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B09B4B3-FFA7-4C57-9B6F-B78F94CA352B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E547A672-E9F7-461A-9E52-C1719FD3F87D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E547A672-E9F7-461A-9E52-C1719FD3F87D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E547A672-E9F7-461A-9E52-C1719FD3F87D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E547A672-E9F7-461A-9E52-C1719FD3F87D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

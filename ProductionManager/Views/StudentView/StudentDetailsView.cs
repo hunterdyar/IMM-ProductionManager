@@ -31,6 +31,7 @@ public class StudentDetailsView : GroupBox
     public void SetStudent(Student? student)
     {
         CurrentStudent = student;
+ 
         _studentWeek = new StudentWeek(student, _mainWindow.DataStore);
         _studentSemesterView = new StudentSemesterView(_studentWeek, _hoverManager,true);
        // _studentSemesterView.MinimumSize = new Size(this.Width-100, 120);
@@ -55,10 +56,13 @@ public class StudentDetailsView : GroupBox
         layout.Add(_weekToggle);
         layout.EndHorizontal();
         layout.BeginHorizontal();
-        layout.Add(GetText(CurrentStudent.FirstName));
-        layout.Add(GetText(CurrentStudent.LastName));
-        layout.Add(GetText(CurrentStudent.Section.ToString()));
-        layout.Add(GetText(CurrentStudent.ClassLevel.ToString()));
+        if (CurrentStudent != null)
+        {
+            layout.Add(GetText(CurrentStudent.FirstName));
+            layout.Add(GetText(CurrentStudent.LastName));
+            layout.Add(GetText(CurrentStudent.Section.ToString()));
+            layout.Add(GetText(CurrentStudent.ClassLevel.ToString()));
+        }
 
         layout.EndHorizontal();
         

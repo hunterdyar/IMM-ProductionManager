@@ -103,7 +103,10 @@ public class SingleProjectView : StackLayout
         _rubricQuickPickDropdown.SelectedValueChanged += (sender, args) =>
         {
             var i = _rubricQuickPickDropdown.SelectedIndex;
-            _rubricTextBox.Text = _rubricQuickPickDropdown.Items[i].Text;
+            if (i >= 0)
+            {
+                _rubricTextBox.Text = _rubricQuickPickDropdown.Items[i].Text;
+            }
         };
         GroupBox rubricGroupBox = new GroupBox();
         rubricGroupBox.Padding = 2;
