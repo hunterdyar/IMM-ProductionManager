@@ -108,6 +108,8 @@ public class Project
                 return Grade.Unsatisfactory;
             case "i":
                 return Grade.NotStarted;
+            case "o":
+                return Grade.Ungraded;
         }
         return Grade.Unknown;
     }
@@ -134,6 +136,8 @@ public class Project
                 return "ns";
             case Grade.Started:
                 return "b";
+            case Grade.Ungraded:
+                return "o";
             default:
                 return "u";
         }

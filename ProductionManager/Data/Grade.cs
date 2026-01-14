@@ -7,4 +7,5 @@ public enum Grade
     Unsatisfactory,
     Started,
     NotStarted,//the real placeholder instead of 'unknown'.
+    Ungraded
 }

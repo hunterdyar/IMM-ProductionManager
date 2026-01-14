@@ -10,6 +10,7 @@ public class GradeDropdown : DropDown
     {
         Items.Add("Not Started");
         Items.Add("Started");
+        Items.Add("Submitted/Ungraded");
         Items.Add("Satisfactory");
         Items.Add("Not Satisfactory");
         SelectedValueChanged += OnSelectedValueChanged;
@@ -29,9 +30,12 @@ public class GradeDropdown : DropDown
                 g = Grade.Started;
                 break;
             case 2:
-                g = Grade.Satisfactory;
+                g = Grade.Ungraded;
                 break;
             case 3:
+                g = Grade.Satisfactory;
+                break;
+            case 4:
                 g = Grade.Unsatisfactory;
                 break;
             // case -1:
@@ -62,6 +66,8 @@ public class GradeDropdown : DropDown
                 return Colors.LightGrey;
             case Grade.Started:
                 return Colors.Lavender;
+            case Grade.Ungraded:
+                return Colors.Cornsilk;
         }
 
         return Colors.White;
@@ -81,11 +87,14 @@ public class GradeDropdown : DropDown
             case Grade.Started:
                 SelectedIndex = 1;
                 break;
-            case Grade.Satisfactory:
+            case Grade.Ungraded:
                 SelectedIndex = 2;
                 break;
-            case Grade.Unsatisfactory:
+            case Grade.Satisfactory:
                 SelectedIndex = 3;
+                break;
+            case Grade.Unsatisfactory:
+                SelectedIndex = 4;
                 break;
             default:
                 SelectedIndex = -1;
